@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basketball Game Understanding — Sudhakar Alla</title>
+  <meta name="description" content="A computer-vision system for analyzing basketball footage — player and ball tracking with re-identification through occlusion, team assignment, jersey-number reading, and court homography to recover positions.">
+  <meta property="og:title" content="Basketball Game Understanding (computer vision)">
+  <meta property="og:description" content="Tracking, re-ID through occlusion, team assignment, and court homography on basketball footage.">
+  <meta property="og:type" content="article">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../demos.html">Demos</a>
+        <a href="../reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="../index.html">&larr; All projects</a>
+    <h1>Basketball Game Understanding <span class="wip">(in&nbsp;progress)</span></h1>
+    <p class="sub">Tracking &amp; re-ID · team assignment · court homography ·
+      <a href="https://github.com/salla23/basketball-cv" rel="noopener noreferrer">github &#8599;</a></p>
+  </div>
+
+  <main class="prose" id="main">
+
+    <p>A computer-vision system for turning basketball footage into structured game information — who is on the court, which team they belong to, where they are, and what number they wear. It is the passion project I keep coming back to, and it happens to be a clean container for the perception problems I care about most: identity under occlusion and recovering geometry from a single camera.</p>
+
+    <h2>Problem</h2>
+    <p>Basketball is adversarial for trackers. Players wear near-identical uniforms, cluster tightly, and constantly cross and screen each other, so identities swap exactly when two players are closest. And a broadcast frame is a perspective projection of a flat court, so on-screen pixels say little about real position until that projection is undone.</p>
+
+    <h2>Approach</h2>
+    <p>Detect players, the ball, and jersey numbers; track them with re-identification that survives occlusion by pairing motion prediction with an appearance model, so a player who disappears behind a screen keeps the same identity when they re-emerge. Separate the two teams by clustering uniform appearance without manual labels. And estimate the court-to-image homography from court lines, so every player's pixel position maps to a real coordinate on the floor — the step that turns tracking into analysis: spacing, movement, and possession geometry.</p>
+
+    <h2>Status</h2>
+    <p>The pipeline structure and the detection and clustering front end are in place; the occlusion-robust re-identification and the robust court homography are in progress, alongside the analysis layer built on top of them.</p>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <div class="fig-ph">Results in progress</div>
+      </div>
+      <figcaption>Tracked players with stable identities and recovered court positions.</figcaption>
+    </div>
+
+    <p><a href="https://github.com/salla23/basketball-cv" rel="noopener noreferrer">Follow progress on GitHub &#8599;</a></p>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

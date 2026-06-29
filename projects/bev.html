@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEV Perception on nuScenes — Sudhakar Alla</title>
+  <meta name="description" content="Camera-to-BEV semantic segmentation on nuScenes with a temporal filter that fuses predictions across frames using ego-motion.">
+  <meta property="og:title" content="BEV Perception with Temporal Fusion">
+  <meta property="og:description" content="Camera-to-BEV segmentation with per-cell temporal fusion across frames.">
+  <meta property="og:type" content="article">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../demos.html">Demos</a>
+        <a href="../reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="../index.html">&larr; All projects</a>
+    <h1>BEV Perception with Temporal Fusion <span class="wip">(in&nbsp;progress)</span></h1>
+    <p class="sub">Camera-to-BEV segmentation · per-cell temporal filtering ·
+      <a href="https://github.com/salla23/bev-nuscenes-mini" rel="noopener noreferrer">github &#8599;</a></p>
+  </div>
+
+  <main class="prose" id="main">
+
+    <p>Bird's-eye-view semantic segmentation from surround cameras, with a temporal layer that fuses each frame's prediction into a persistent BEV grid using ego-motion. The thread connecting it to my occupancy-mapping work is the same one I keep pulling on: a single frame is noisy and partial, but the right Bayesian update across frames recovers a stable picture that no single frame contains.</p>
+
+    <h2>Problem</h2>
+    <p>Lifting camera images into a top-down BEV grid is the representation most planning stacks actually consume, but per-frame BEV segmentation flickers — a cell flips between classes as objects are occluded, enter at range, or pass through shadow and glare. Planning wants temporal stability, not a fresh guess every frame.</p>
+
+    <h2>Approach</h2>
+    <p>A pretrained lift-splat model produces per-frame BEV class logits on nuScenes. On top of it, a per-cell filter carries each cell's class estimate and its uncertainty forward in time: ego-motion warps the previous grid into the current frame, and each new prediction updates the estimate with a confidence weight rather than overwriting it. It is the same log-odds occupancy idea generalized from a static two-class map to a moving-frame, many-class one — the Kalman gain plays the role the fixed log-odds increment plays in the occupancy grid.</p>
+
+    <h2>Evaluation plan</h2>
+    <p>Per-class IoU on the validation split, latency on stated hardware, and a failure analysis across the three regimes that break BEV in practice — long range, night, and occlusion — with a before/after that quantifies what the temporal layer buys in both accuracy and flicker.</p>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <div class="fig-ph">Results in progress</div>
+      </div>
+      <figcaption>Per-class IoU, latency, and the temporal-fusion comparison will appear here.</figcaption>
+    </div>
+
+    <p><a href="https://github.com/salla23/bev-nuscenes-mini" rel="noopener noreferrer">Follow progress on GitHub &#8599;</a></p>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

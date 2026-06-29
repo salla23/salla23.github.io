@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crack Detection &amp; Navigation — Sudhakar Alla</title>
+  <meta name="description" content="A hybrid crack-detection pipeline: CLAHE + Difference-of-Gaussians preprocessing, classical localization and width measurement, and Chinese Postman route planning over the crack network.">
+  <meta property="og:title" content="Crack Detection & Autonomous Navigation Pipeline">
+  <meta property="og:description" content="CLAHE + DoG preprocessing, classical measurement, and Chinese Postman route planning over the crack graph.">
+  <meta property="og:type" content="article">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../demos.html">Demos</a>
+        <a href="../reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="../index.html">&larr; All projects</a>
+    <h1>Crack Detection &amp; Autonomous Navigation Pipeline</h1>
+    <p class="sub">CLAHE + DoG &rarr; mask &rarr; skeleton &rarr; Chinese Postman route &middot;
+      <a href="https://github.com/salla23/crack-detection-pipeline" rel="noopener noreferrer">github &#8599;</a></p>
+  </div>
+
+  <main class="prose" id="main">
+
+    <p>A hybrid pipeline for detecting, measuring, and <em>routing over</em> surface cracks. Classical preprocessing isolates crack ridges; classical morphology measures them; and a graph route-planner turns the detected crack network into a traversal a repair platform can follow. Built and measured on the public <a href="https://github.com/cuilimeng/CrackForest-dataset" rel="noopener noreferrer">CrackForest dataset</a>, CPU-only, no model weights to download.</p>
+
+    <h2>Problem</h2>
+    <p>Road-surface cracks are thin, low-contrast, and morphologically irregular. A missed crack becomes an expensive return visit for a repair crew; a false positive wastes pennies of sealant. That cost asymmetry shapes every decision below &mdash; recall is the binding constraint.</p>
+
+    <h2>Approach</h2>
+    <p><strong>Preprocessing.</strong> CLAHE normalizes local contrast so faint cracks read consistently across lighting; a Difference-of-Gaussians band-pass then enhances thin crack ridges while suppressing surface texture at the wrong scale.</p>
+    <p><strong>Localization &amp; measurement.</strong> The crack mask is split into instances with eight-connectivity connected components &mdash; eight-way rather than four-way specifically so diagonally-touching crack pixels stay in one component, which keeps the crack network connected for routing. Each instance is skeletonized; width is read directly as <code>2 &times; EDT</code> at the skeleton (the Euclidean distance transform), giving per-segment length, width, and a severity proxy with no learned width head.</p>
+    <p><strong>Route planning.</strong> The skeleton becomes an 8-connected weighted graph &mdash; a node per skeleton pixel, cardinal neighbours weighted 1 and diagonals √2 &mdash; and small components are dropped. Solving the Chinese Postman (Route Inspection) problem on each connected component &mdash; odd-degree matching on shortest-path distances, path duplication to make the graph Eulerian, then an Eulerian circuit via Hierholzer's algorithm (all delegated to networkx's tested <code>eulerize</code>) &mdash; yields a walk that covers <em>every</em> skeleton edge. That ordered waypoint sequence is the path a repair platform follows. For very large components the optimal matching is expensive, so above a node cap the route falls back to a depth-first traversal that still visits everything but isn't length-optimal; the output flags which mode produced it, so the guarantee is never overstated.</p>
+
+    <h2>Why classical here</h2>
+    <p>Deep learning is the right tool where semantics dominate. But for localization and measurement, classical methods carry the load: when the filter misfires &mdash; road texture at the right scale, say &mdash; the response makes it immediately visible <em>why</em>, and the fix (CLAHE pre-normalization, gamma tuning) is deterministic. A learned decoder offers no such diagnostic handle, and width-from-EDT is closed-form and checkable against the source image.</p>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <img src="../assets/crack_pipeline_stages.png" alt="Pipeline stages: input, CLAHE, DoG ridge response, binary mask, width skeleton" loading="lazy">
+      </div>
+      <figcaption>Stages: raw input &middot; CLAHE contrast &middot; DoG ridge response &middot; binary mask &middot; per-skeleton width.</figcaption>
+    </div>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <img src="../assets/crack_route_plan.png" alt="Chinese Postman traversal route drawn over the detected crack network" loading="lazy">
+      </div>
+      <figcaption>Chinese Postman traversal over the crack network &mdash; an ordered route covering every segment.</figcaption>
+    </div>
+
+    <h2>Results</h2>
+    <p class="note">Measured on CrackForest, CPU-only (Intel Core i7, Windows 10). Numbers refresh on each run; the figures above reproduce from <code>scripts/gen_figures.py</code>.</p>
+    <table class="metrics">
+      <tr><td>Mean runtime</td><td>786 ms / image</td></tr>
+      <tr><td>Median runtime</td><td>745 ms / image</td></tr>
+      <tr><td>Range</td><td>368 &ndash; 1375 ms</td></tr>
+      <tr><td>Mean instances detected</td><td>86 / image</td></tr>
+      <tr><td>Mean crack pixel coverage</td><td>4.97 %</td></tr>
+    </table>
+
+    <h2>Limits &amp; next steps</h2>
+    <p>The ridge filter responds to any elongated dark structure at the right scale &mdash; sealed cracks, painted markings, and oil stains can produce false positives. Severity thresholds are in pixel units and need a field calibration step (pixels-per-mm from camera intrinsics) before the labels are operationally meaningful. Wet surfaces and heavy shadows suppress local contrast enough to cause misses. The natural extension is feeding the Chinese Postman waypoint sequence into a ROS navigation stack for autonomous follow-along; that navigation layer was built against platform-specific hardware in the original deployment and is documented separately.</p>
+
+    <p><a href="https://github.com/salla23/crack-detection-pipeline" rel="noopener noreferrer">View the code on GitHub &#8599;</a></p>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

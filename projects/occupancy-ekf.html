@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EKF Localization + Occupancy Mapping — Sudhakar Alla</title>
+  <meta name="description" content="An EKF localization stack fused with log-odds occupancy mapping and a semantic layer for a GPS-denied indoor robot — multi-sensor fusion with adaptive covariance and graceful sensor failover.">
+  <meta property="og:title" content="EKF Localization + Occupancy Mapping (multi-sensor fusion)">
+  <meta property="og:description" content="Multi-sensor fusion with adaptive covariance and graceful sensor failover, plus log-odds occupancy mapping.">
+  <meta property="og:type" content="article">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../demos.html">Demos</a>
+        <a href="../reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="../index.html">&larr; All projects</a>
+    <h1>EKF Localization + Occupancy Mapping</h1>
+    <p class="sub">Multi-sensor fusion · adaptive covariance · graceful failover ·
+      <a href="https://github.com/salla23/occupancy-ekf-fusion" rel="noopener noreferrer">github &#8599;</a></p>
+  </div>
+
+  <main class="prose" id="main">
+
+    <p>An EKF localization stack fused with a log-odds occupancy grid and a semantic layer. It keeps a GPS-denied indoor robot localized and mapping while individual sensors drop in and out — the multi-sensor fusion and failover problem I worked on in a teleoperation system, rebuilt on a simulated corridor here so every part of the behavior is reproducible and inspectable. The perception core is framework-independent; a ROS2 node layer wraps it for simulation and, eventually, hardware.</p>
+
+    <h2>Problem</h2>
+    <p>A GPS-denied indoor robot needs both a metric map and a reliable pose. Fiducials give sparse absolute fixes; visual odometry gives dense motion but drifts; LiDAR and sonar build geometry; semantic tags support planning beyond binary occupancy. No single sensor is sufficient, and any of them can drop out mid-run.</p>
+
+    <h2>Approach</h2>
+    <p><strong>Localization.</strong> A 3-DoF EKF (unicycle motion model, analytic Jacobians) runs sequential updates: predict once per tick, then a VSLAM update, then a fiducial update when a marker is visible. Measurement covariance is adaptive &mdash; visual-odometry trust falls with fewer features or higher reprojection error; fiducial trust falls with smaller marker size in frame. The covariance update uses the Joseph form for numerical stability, and innovations are angle-wrapped.</p>
+    <p><strong>Failover.</strong> A dropped fiducial is simply a skipped update, not special-case logic &mdash; the filter coasts on motion and odometry and recovers when the marker returns. That graceful degradation is the property the whole design is organized around.</p>
+    <p><strong>Mapping.</strong> A Bayesian log-odds occupancy grid updates from ray-cast LiDAR and sonar (free along the ray, occupied at the endpoint), with additive updates and clamping. A hybrid semantic layer combines classical region rules with a learned stub for local refinement.</p>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <img src="../assets/occupancy_ekf_demo.png" alt="EKF trajectory with covariance ellipses, occupancy grid, and innovation diagnostics" loading="lazy">
+      </div>
+      <figcaption>Left: EKF trajectory with 2σ covariance ellipses vs ground truth. Center: log-odds occupancy map. Right: VSLAM and fiducial innovation norms (bands mark fiducial dropout).</figcaption>
+    </div>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <img src="../assets/occupancy_semantic.png" alt="Semantic tags overlaid on the occupancy grid" loading="lazy">
+      </div>
+      <figcaption>Semantic tags (classical regions + learned stub) overlaid on occupancy.</figcaption>
+    </div>
+
+    <h2>Results</h2>
+    <p class="note">Measured in a simulated corridor with a fixed seed.</p>
+    <table class="metrics">
+      <tr><td>Pose RMSE (101 ticks)</td><td>0.019 m</td></tr>
+      <tr><td>Map cells updated</td><td>&gt; 12,000</td></tr>
+      <tr><td>Mean tick latency</td><td>574 ms (Python, CPU)</td></tr>
+      <tr><td>Fiducial dropout</td><td>VSLAM-only fusion, no failure</td></tr>
+      <tr><td>Unit + integration tests</td><td>10 / 10 passing</td></tr>
+    </table>
+
+    <h2>Design choices &amp; honest limits</h2>
+    <p>EKF over a cost-function blend for v0, because explicit Jacobians, covariance ellipses, and innovation plots make the behavior legible. Localization-only (landmarks are not in the state vector; the known fiducial map provides anchors), which is simpler than EKF-SLAM and matches the original system. Core algorithms are pure importable Python; the ROS2 nodes are thin adapters only.</p>
+    <p>Known limits, stated plainly: the visual odometry is a noise model rather than a real front end, and the world is a 2D flat-floor simulation. One deliberate simplification worth naming: VSLAM enters the filter as an absolute-pose pseudo-measurement composed from the previous filtered pose, which correlates it with the prior and makes the filter mildly overconfident on visual odometry; a relative measurement model or stochastic cloning is the cleaner formulation. The ROS2 layer currently targets simulation — a Nav2 costmap bringup and a real LiDAR demo are the next steps, along with a pose-graph variant.</p>
+
+    <p><a href="https://github.com/salla23/occupancy-ekf-fusion" rel="noopener noreferrer">View the code on GitHub &#8599;</a></p>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

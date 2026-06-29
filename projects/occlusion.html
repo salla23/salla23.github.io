@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compositional Estimation Under Occlusion — Sudhakar Alla</title>
+  <meta name="description" content="Estimating per-class composition of a falling stream of mixed objects under heavy occlusion, by aggregating evidence across the fall and allocating against a known total with an explicit abstention bucket.">
+  <meta property="og:title" content="Compositional Estimation Under Occlusion">
+  <meta property="og:description" content="Recovering per-class composition from an occluded falling stream via temporal aggregation and allocation with abstention.">
+  <meta property="og:type" content="article">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../demos.html">Demos</a>
+        <a href="../reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="../index.html">&larr; All projects</a>
+    <h1>Compositional Estimation Under Occlusion <span class="wip">(in&nbsp;progress)</span></h1>
+    <p class="sub">Temporal aggregation · allocation with abstention ·
+      <a href="https://github.com/salla23/occlusion-compositional-estimation" rel="noopener noreferrer">github &#8599;</a></p>
+  </div>
+
+  <main class="prose" id="main">
+
+    <p>A method for estimating the per-class composition of a falling stream of mixed objects — say a bin of produce tipped out all at once — when the items heavily occlude one another. The question I find genuinely interesting: given only a cluttered, self-occluding video and a known total, how much of each class is actually there?</p>
+
+    <h2>Problem</h2>
+    <p>A pile at rest is maximally occluded — items hide behind each other and no single view sees the whole. Any one frame undercounts, and which classes it undercounts changes frame to frame. A system that reports confident per-class numbers from a single frame will be confidently wrong.</p>
+
+    <h2>Approach</h2>
+    <p>The fall itself is the opportunity. As objects tumble they separate, so the falling stream is a moving cross-section: an item hidden at one instant is visible at another. Tracking objects through the fall and accumulating per-class evidence weighted by how clearly each was seen recovers a composition no single frame contains.</p>
+    <p>Two ideas carry it. When a measured total is available — a scale reading, for instance — vision only needs to estimate each class's <em>fraction</em>; multiplying by the known total normalizes out a whole family of absolute-estimation errors. And when occlusion makes part of the stream genuinely ambiguous, the right output is not a confident guess but an explicit unattributed residual: so many units of this, so many of that, and a named remainder the system won't pretend to know. Confidently misattributed is a worse failure than honestly unattributed, and the design treats it that way.</p>
+
+    <h2>Status</h2>
+    <p>The simulation environment and tracking are in place; the evidence-aggregation and allocation logic, the failure analysis, and the results are in progress.</p>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <div class="fig-ph">Results in progress</div>
+      </div>
+      <figcaption>Single-frame vs temporally-aggregated composition, against ground truth.</figcaption>
+    </div>
+
+    <p><a href="https://github.com/salla23/occlusion-compositional-estimation" rel="noopener noreferrer">Follow progress on GitHub &#8599;</a></p>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

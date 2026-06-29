@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demos — Sudhakar Alla</title>
+  <meta name="description" content="Interactive teaching demos from Sudhakar Alla: 2D-to-3D back-projection with the pinhole camera model and ground-plane intersection, and a one-layer OCR intuition demo.">
+  <meta property="og:title" content="Demos — Sudhakar Alla">
+  <meta property="og:description" content="Interactive teaching demos: 2D-to-3D back-projection (pinhole + ground plane) and a one-layer OCR demo.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+  <script src="demos.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="demos.html" aria-current="page">Demos</a>
+        <a href="reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="index.html">&larr; Home</a>
+    <h1>Demos</h1>
+    <p class="sub">Small interactive tools I use when teaching &mdash; built to be poked at, not just watched</p>
+  </div>
+
+  <main id="main">
+
+    <!-- ============ Demo 1: back-projection ============ -->
+    <section class="demo" aria-labelledby="bp-h">
+      <p class="demo-tag">Interactive &middot; perception fundamentals</p>
+      <div class="demo-head">
+        <h2 id="bp-h">2D &rarr; 3D back-projection</h2>
+        <a class="card-repo" href="https://github.com/salla23/occupancy-ekf-fusion" rel="noopener noreferrer">related code &#8599;</a>
+      </div>
+      <div class="prose demo-lede">
+        <p>This is the first thing I built at ICURO, and the concept I most enjoy teaching: how a single 2D pixel becomes a real 3D coordinate. The view below is a simulated forward-facing monocular camera looking at a flat floor. Click anywhere on the floor &mdash; the system casts a ray through the pinhole model and intersects it with the ground plane to recover where that pixel is in the world. Drag the calibration sliders and watch the geometry respond.</p>
+      </div>
+
+      <div class="demo-stage">
+        <div class="cam-panel">
+          <div class="panel-cap">camera view &mdash; click the floor</div>
+          <div class="demo-canvas-wrap cam-wrap">
+            <canvas id="bp-cam" width="640" height="480" tabindex="0" role="img" aria-label="Simulated forward-facing camera view of a floor grid with cones. Click, or focus and use arrow keys, to back-project a pixel to a 3D ground coordinate."></canvas>
+            <noscript><div class="fig-ph">Interactive demo &mdash; needs JavaScript. The math and writeup below explain it in full.</div></noscript>
+          </div>
+        </div>
+
+        <div class="demo-controls">
+          <div class="ctrl-group">
+            <div class="ctrl-group-title">camera calibration</div>
+            <div class="ctrl"><label for="bp-f">focal length f<span class="val" id="bp-f-v"></span></label>
+              <input type="range" id="bp-f" min="200" max="1100" step="5" data-unit=" px"></div>
+            <div class="ctrl"><label for="bp-cx">principal point c&#8339;<span class="val" id="bp-cx-v"></span></label>
+              <input type="range" id="bp-cx" min="160" max="480" step="2" data-unit=" px"></div>
+            <div class="ctrl"><label for="bp-cy">principal point c&#7527;<span class="val" id="bp-cy-v"></span></label>
+              <input type="range" id="bp-cy" min="120" max="360" step="2" data-unit=" px"></div>
+            <div class="ctrl"><label for="bp-h">camera height h<span class="val" id="bp-h-v"></span></label>
+              <input type="range" id="bp-h" min="0.3" max="2.5" step="0.05" data-unit=" m"></div>
+            <div class="ctrl"><label for="bp-pitch">downward pitch &phi;<span class="val" id="bp-pitch-v"></span></label>
+              <input type="range" id="bp-pitch" min="0" max="35" step="0.5" data-unit="&deg;"></div>
+          </div>
+          <div class="readout" id="bp-readout" aria-live="polite">
+            <div class="ro-row"><span>pixel (u, v)</span><b id="ro-uv">&mdash;</b></div>
+            <div class="ro-row"><span>ground X, Y</span><b id="ro-ground">&mdash;</b></div>
+            <div class="ro-row"><span>range</span><b id="ro-range">&mdash;</b></div>
+            <div class="ro-row"><span>status</span><b id="ro-status">&mdash;</b></div>
+            <div class="ro-row"><span>depth sensitivity</span><b id="ro-sens">&mdash;</b></div>
+          </div>
+        </div>
+
+        <div class="side-panel">
+          <div class="panel-cap">side view &mdash; ray meets the ground</div>
+          <div class="demo-canvas-wrap side-wrap">
+            <canvas id="bp-side" width="600" height="400" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <div class="demo-math">
+          <div class="kmat-box">
+            <div class="lbl">intrinsic matrix K</div>
+            <div class="kmat" aria-hidden="true">
+              <span class="k" id="k-f">500</span><span class="z">0</span><span class="k" id="k-cx">320</span>
+              <span class="z">0</span><span class="k" id="k-f2">500</span><span class="k" id="k-cy">240</span>
+              <span class="z">0</span><span class="z">0</span><span>1</span>
+            </div>
+          </div>
+          <div class="eqns" aria-hidden="true">
+            <div class="lbl">ray &rarr; ground intersection</div>
+            <p>d<sub>cam</sub> = K&#8315;&sup1;[u v 1]&#7488; = <span class="res" id="eq-dc">&mdash;</span></p>
+            <p>d<sub>world</sub> = R(&phi;)&middot;d<sub>cam</sub> = <span class="res" id="eq-dw">&mdash;</span></p>
+            <p>horizon v&#7522; = c&#7527; &minus; f&middot;tan&phi; = <span class="res" id="eq-hz">&mdash;</span></p>
+            <p>&lambda; = &minus;h / d<sub>world,z</sub> = <span class="res" id="eq-lam">&mdash;</span></p>
+            <p>P = C + &lambda;&middot;d<sub>world</sub> &rarr; <span class="res" id="eq-pw">&mdash;</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="prose demo-writeup">
+        <h2>How it works</h2>
+        <p><strong>The pinhole camera.</strong> A camera is, to first approximation, a single point that light passes through onto a sensor. The <em>intrinsic matrix</em> K captures the lens geometry: the focal length f (in pixels) sets how strongly the scene is magnified, and the principal point (c&#8339;, c&#7527;) is where the optical axis pierces the image. Inverting K turns a pixel back into a direction in the camera's own frame: d<sub>cam</sub> = K&#8315;&sup1;[u, v, 1]&#7488;. That is a ray, not a point &mdash; a single image can't tell you how far along that ray the world actually is.</p>
+        <p><strong>Pose, and the trick that recovers depth.</strong> The <em>extrinsics</em> place the camera in the world: here, a height h above the floor and a downward pitch &phi;. Rotating the ray by R(&phi;) expresses it in world coordinates. To pin down distance from one image, I add one assumption &mdash; the thing I clicked lies on the ground plane (Z = 0). The ray then has exactly one ground intersection, found by scaling it until its height reaches zero: &lambda; = &minus;h / d<sub>world,z</sub>, giving the 3D point P = C + &lambda;d<sub>world</sub>. The forward and lateral parts of P are the real-world position of that pixel.</p>
+        <p><strong>Why distance hurts.</strong> Pixels above the <em>horizon</em> (v&#7522; = c&#7527; &minus; f&middot;tan&phi;) point at or above the plane and never meet it &mdash; the demo reports no intersection there. Just below the horizon, a one-pixel move sweeps the ray across enormous distances, so range explodes and a single pixel of detection error becomes metres of position error. The "depth sensitivity" read-out is exactly that: how many metres of range one pixel of vertical error buys at the point you clicked. Click near your feet, then near the horizon, and watch it blow up. That sensitivity is the whole reason a real robot can't lean on flat-ground monocular depth at range.</p>
+        <p><strong>What the production system actually did.</strong> ICURO's platform didn't assume a flat floor for depth. It recovered the depth scale from a moving camera &mdash; multi-frame triangulation through a VSLAM map, with no depth sensor &mdash; and fed those 3D waypoints to operators. This demo isolates the foundational special case so the camera model itself is easy to see; the EKF rebuild it grew into (<a href="https://github.com/salla23/occupancy-ekf-fusion" rel="noopener noreferrer">occupancy-ekf-fusion</a>) carries the multi-sensor fusion and uses the same camera intrinsics the defaults here come from (f = 500, principal point 320&times;240, on a 640&times;480 image). The pinhole math is in-browser and self-contained; the repo is Python, so it isn't run live here.</p>
+      </div>
+    </section>
+
+    <!-- ============ Demo 2: OCR ============ -->
+    <section class="demo" aria-labelledby="ocr-h">
+      <p class="demo-tag">Interactive &middot; a neural-network intuition</p>
+      <div class="demo-head">
+        <h2 id="ocr-h">One neuron per letter</h2>
+      </div>
+      <div class="prose demo-lede">
+        <p>The smallest honest picture of how a neural network classifies. Draw a letter on the 7&times;5 grid by clicking pixels. Each candidate letter is a single output neuron whose weights are a stored template; its activation is just how well your drawing lines up with that template, and the strongest neuron wins. "Teach" overwrites a neuron's weights with whatever you've drawn &mdash; learning, made visible.</p>
+      </div>
+
+      <div class="ocr-stage">
+        <div class="ocr-left">
+          <div class="panel-cap">draw a letter &mdash; click pixels</div>
+          <div class="ocr-grid" id="ocr-grid" role="group" aria-label="7 by 5 pixel grid; toggle pixels to draw a letter"></div>
+          <noscript><div class="fig-ph">Interactive demo &mdash; needs JavaScript.</div></noscript>
+          <div class="ocr-ctrls">
+            <button class="ocr-btn" id="ocr-clear" type="button">Clear</button>
+            <button class="ocr-btn" id="ocr-load" type="button">Load template</button>
+            <button class="ocr-btn" id="ocr-teach" type="button">Teach as selected</button>
+          </div>
+          <div class="panel-cap">target letter &mdash; for load / teach</div>
+          <div class="ocr-letters" id="ocr-letters" role="group" aria-label="Select target letter"></div>
+        </div>
+        <div class="ocr-right">
+          <div class="ocr-pred">
+            <div class="big" id="ocr-pred-big">&mdash;</div>
+            <div class="sub2" id="ocr-pred-sub"></div>
+          </div>
+          <div>
+            <div class="panel-cap">output neuron activations</div>
+            <div class="ocr-bars" id="ocr-bars" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prose demo-writeup">
+        <h2>How it works</h2>
+        <p>The grid is 35 binary inputs &mdash; one number per pixel, on or off. Each letter is one output neuron, and its 35 weights <em>are</em> a little picture of that letter. The activation is a weighted sum: pixels that agree with the template push the score up, pixels that disagree push it down. Whichever neuron scores highest is the prediction, and the bars show every neuron's activation so you can see the runner-up and why a sloppy stroke flips the answer.</p>
+        <p>Pressing "Teach" sets the selected neuron's weights to your current drawing. That is the entire idea behind training, stripped of machinery: learning is choosing weights so the right neuron fires hardest. A real OCR model stacks many neurons across several layers and learns those weights from thousands of examples by gradient descent rather than by copying one drawing &mdash; but the one-layer version is where the intuition lives, and it's the version I reach for first with students.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

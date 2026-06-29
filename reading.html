@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reading — Sudhakar Alla</title>
+  <meta name="description" content="Papers and books that shaped how I think about 3D reconstruction, perception in messy conditions, honest evaluation, and production ML.">
+  <meta property="og:title" content="Reading — Sudhakar Alla">
+  <meta property="og:description" content="Papers and books that shaped how I think, with a line on why each stuck.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="demos.html">Demos</a>
+        <a href="reading.html" aria-current="page">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <h1>Reading</h1>
+    <p class="sub">Papers and books that shaped how I think &mdash; and why each stuck</p>
+  </div>
+
+  <main id="main">
+
+    <section class="prose" aria-label="Intro">
+      <p>A running list, grouped by theme. Curated on purpose: the ones that changed how I approach a problem, not everything I've skimmed.
+      <!-- DRAFT NOTE (remove before deploy): every "why" line is a draft in your voice — edit each to be genuinely yours. "citation to confirm" = verify venue/year. --></p>
+    </section>
+
+    <!-- ENTRY TEMPLATE:
+      <div class="read-item">
+        <div class="rt">Title <span class="kind">paper</span></div>
+        <div class="rm">Authors · Venue · Year</div>
+        <div class="rw">One line on why it stuck.</div>
+      </div>  -->
+
+    <div class="read-group">
+      <h2>3D Reconstruction &amp; Image Stitching</h2>
+      <div class="read-item">
+        <div class="rt">BIMStruct3D: A Fully Automated Hybrid Learning Scan-to-BIM Pipeline with Integrated Topology Refinement <span class="kind">paper</span></div>
+        <div class="rm">Chamseddine, Kaufmann, Schellen, Glock, Stricker, Rambach · EC³ (European Conference on Computing in Construction) · 2026</div>
+        <div class="rw">The work my scan-to-BIM pipeline builds on; its instance-matching-free voxel-overlap metric (vIoU) is what I adopted so I could compare reconstructed geometry to ground truth without brittle per-instance 3D-IoU.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Monocular Depth Estimation Based on Deep Learning: An Overview <span class="kind">paper</span></div>
+        <div class="rm">Zhao, Sun, Zhang, Tang, Qian · arXiv · 2020</div>
+        <div class="rw">The map I return to for where learned monocular depth helps and where multi-view geometry still wins — directly relevant to the VSLAM-plus-triangulation depth work I built.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Automated Building Image Extraction from 360° Panoramas for Post-Disaster Evaluation <span class="kind">paper</span></div>
+        <div class="rm">Lenjani et al. · arXiv · 2019</div>
+        <div class="rw">Panorama retrieval plus CV for structural assessment; it connects to my interest in stitching wide views and recovering a usable perspective from inside them.</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>Perception in Messy Conditions</h2>
+      <div class="read-item">
+        <div class="rt">RDNet — Raindrop Detection Network <span class="kind">whitepaper</span></div>
+        <div class="rm">EDAG Engineering · Whitepaper · 2021 · building on Hao et al. (2019), "Learning From Synthetic Photorealistic Raindrop for Single Image Raindrop Removal"</div>
+        <div class="rw">Adverse-weather camera perception done sensibly: segment the raindrops, then reconstruct what they hide. The synthetic-to-real generalization result is the part that stuck.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Water Segmentation with Deep Learning for Flood Detection and Monitoring <span class="kind">paper</span></div>
+        <div class="rm">Zaffaroni &amp; Rossi · LINKS Foundation · year to confirm</div>
+        <div class="rw">Segmentation under genuinely messy field conditions, where deployment constraints matter as much as the architecture — close in spirit to the road-surface work I care about.</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>Evaluation &amp; Honest Metrics</h2>
+      <div class="read-item">
+        <div class="rt">Combating Label Noise in Deep Learning Using Abstention <span class="kind">paper</span></div>
+        <div class="rm">Thulasidasan et al. · NeurIPS · 2019</div>
+        <div class="rw">A loss that lets a network decline to predict on confusing samples is the cleanest version of an idea I keep returning to: knowing when a model should abstain is part of honest evaluation, not an afterthought.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Voxel-based overlap (vIoU) for Scan-to-BIM evaluation <span class="kind">method</span></div>
+        <div class="rm">introduced in BIMStruct3D (Chamseddine et al., 2026)</div>
+        <div class="rw">Instance-matching-free overlap is the metric that finally let me evaluate reconstructed walls honestly — per-instance 3D-IoU collapses on a wall-thickness offset and hides exactly the errors that matter.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Boosted Decision Trees <span class="kind">paper</span></div>
+        <div class="rm">Coadou · in "AI for High Energy Physics" · 2022</div>
+        <div class="rw">The clearest treatment of classifier figures-of-merit (ROC, significance) I've found; I keep it as a refresher on evaluation discipline as much as on the algorithm.</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>Forecasting, Causal &amp; Production ML</h2>
+      <div class="read-item">
+        <div class="rt">Concurrent Neural Network: A Model of Competition Between Time Series <span class="kind">paper</span></div>
+        <div class="rm">Garnier · arXiv · 2020</div>
+        <div class="rw">A principled way to model cannibalization between competing products — exactly the confounder I had to control for in price-elasticity and forecasting across retail markets.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Time Series Clustering for Grouping Products by Price and Sales Patterns <span class="kind">paper</span></div>
+        <div class="rm">Bozanta et al. · arXiv · 2022</div>
+        <div class="rw">The custom distance metric (how price and sales move together, not raw values) reframed how I'd segment products before forecasting them.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">A State-Space Approach to Estimate the Energy Demand Model <span class="kind">paper</span></div>
+        <div class="rm">Tong &amp; Yang · Energy Procedia · citation to confirm</div>
+        <div class="rw">A compact reminder of why state-space / UCM formulations fit demand series with structural components so well — the backbone of the forecasting I shipped.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">A Gradient Boosting Approach for Optimal Selection of Bidding Strategies in Reservoir Hydro <span class="kind">paper</span></div>
+        <div class="rm">Riddervold et al. · arXiv · 2020</div>
+        <div class="rw">Using ML to choose a strategy under uncertainty, rather than just predict a number, is the decision-layer framing I find more honest than chasing point-forecast accuracy.</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>Foundations &amp; Methods</h2>
+      <div class="read-item">
+        <div class="rt">Rapid Object Detection Using a Boosted Cascade of Simple Features <span class="kind">paper</span></div>
+        <div class="rm">Viola &amp; Jones · CVPR · 2001</div>
+        <div class="rw">The classic that taught me cascades and cost-aware early rejection; still my reference point when a classical detector has to run in real time on weak hardware.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">An Attention-Infused Deep Learning System with Grad-CAM for Early Glaucoma Screening <span class="kind">paper</span></div>
+        <div class="rm">Swaminathan · arXiv · 2025</div>
+        <div class="rw">A concrete CNN-plus-Vision-Transformer cross-attention build with Grad-CAM interpretability; part of how I'm closing my own gap on transformer-based vision.</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>Game AI &amp; Agents <span class="wip">(outside work)</span></h2>
+      <div class="read-item">
+        <div class="rt">Winning Isn't Everything: Enhancing Game Development with Intelligent Agents <span class="kind">paper</span></div>
+        <div class="rm">citation to confirm · ~2020</div>
+        <div class="rw">Agents tuned for playtesting and balance rather than raw win-rate — a refreshing reframe of what "good" means for an agent, and why I tinker with game AI on the side.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Genetic Algorithms for Evolving Computer Chess Programs <span class="kind">paper</span></div>
+        <div class="rm">David, van den Herik, Koppel, Netanyahu</div>
+        <div class="rw">Evolving an evaluation function from grandmaster games up to grandmaster strength is a beautiful demonstration of learning structure from data — and pure fun to read.</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>On the Reading List <span class="wip">(queued)</span></h2>
+      <div class="read-item">
+        <div class="rt">Automatic Panoramic Image Stitching using Invariant Features <span class="kind">paper</span></div>
+        <div class="rm">Brown &amp; Lowe · IJCV · 2007</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Image Alignment and Stitching: A Tutorial <span class="kind">paper</span></div>
+        <div class="rm">Szeliski · 2006</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis <span class="kind">paper</span></div>
+        <div class="rm">Mildenhall et al. · ECCV · 2020</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Stereo Magnification: Learning View Synthesis using Multiplane Images <span class="kind">paper</span></div>
+        <div class="rm">Zhou et al. · SIGGRAPH · 2018</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Lift, Splat, Shoot: Encoding Images from Arbitrary Camera Rigs for BEV <span class="kind">paper</span></div>
+        <div class="rm">Philion &amp; Fidler · ECCV · 2020</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">PointPillars: Fast Encoders for Object Detection from Point Clouds <span class="kind">paper</span></div>
+        <div class="rm">Lang et al. · CVPR · 2019</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">ORB-SLAM2: an Open-Source SLAM System for Monocular, Stereo and RGB-D Cameras <span class="kind">paper</span></div>
+        <div class="rm">Mur-Artal &amp; Tardós · IEEE T-RO · 2017</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">On Calibration of Modern Neural Networks <span class="kind">paper</span></div>
+        <div class="rm">Guo et al. · ICML · 2017</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">A Comprehensive Review of Computer Vision in Sports <span class="kind">paper</span></div>
+        <div class="rm">Naik, Hashmi, Bokde, Yaseen · arXiv · 2022</div>
+      </div>
+    </div>
+
+    <div class="read-group">
+      <h2>Books</h2>
+      <div class="read-item">
+        <div class="rt">Robotics: Control, Sensing, Vision, and Intelligence <span class="kind">textbook</span></div>
+        <div class="rm">Fu, Gonzalez &amp; Lee · McGraw-Hill</div>
+        <div class="rw">The reference I still pull off the shelf for kinematics, sensing, and the vision-to-control bridge; a lot of how I frame robotics problems traces back to it.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">Into Thin Air <span class="kind">book</span></div>
+        <div class="rm">Jon Krakauer · 1997</div>
+        <div class="rw">A clear-eyed account of how small decisions compound into failure under pressure — I think about it whenever a system's failure mode turns out to be a chain, not a single cause.</div>
+      </div>
+      <div class="read-item">
+        <div class="rt">The World Without Us <span class="kind">book</span></div>
+        <div class="rm">Alan Weisman · 2007</div>
+        <div class="rw">A thought experiment about what persists when the operators leave; oddly relevant to caring about systems that have to keep working without constant attention.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="mailto:sudhakaralla@icloud.com">Email</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

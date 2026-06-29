@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Sudhakar Alla</title>
+  <meta name="description" content="About Sudhakar Alla — computer vision and perception engineer. Background across Applied Materials, ICURO, and Kimberly-Clark; production ML and honest evaluation.">
+  <meta property="og:title" content="About — Sudhakar Alla">
+  <meta property="og:description" content="Computer vision and perception engineer. Production systems, honest evaluation.">
+  <meta property="og:type" content="profile">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="demos.html">Demos</a>
+        <a href="reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <h1>About</h1>
+    <p class="sub">Eight years of perception systems for the physical world</p>
+  </div>
+
+  <main id="main">
+
+    <section class="prose pull" aria-label="Intro">
+      <p>I build computer vision and perception systems that have to survive contact with the real world &mdash; messy sensor data, edge hardware, and operators who need the system to work, not to score well on a benchmark. The through-line across my work is an evaluation-first habit: define what "correct" actually means for the problem before reaching for a model, then hold the system to that definition honestly.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="h-work">
+      <h2 id="h-work">Where I've worked</h2>
+
+      <p><strong>ICURO — Founding Autonomous Systems Engineer.</strong> My strongest anchor in perception and robotics. I built a multi-sensor perception and localization stack for a teleoperated platform: a four-sensor suite fusing camera VSLAM, fiducial pose, sonar, and 2D LiDAR through an EKF with confidence-weighted failover, plus a probabilistic occupancy grid consumed by the planner. I shipped edge vision on Jetson with a roughly 70% latency reduction, and the systems I built there are still in daily production use by hundreds of operators.</p>
+
+      <p><strong>Applied Materials — Machine Vision Engineer.</strong> My evaluation-discipline anchor. I solved an SEM defect-detection and clustering problem that three prior engineering teams had failed to crack &mdash; not with a bigger model, but by defining domain-grounded correctness metrics first, then building to them. I documented the approach in an internal IEEE-style paper.</p>
+
+      <p><strong>Kimberly-Clark — AI Tech Lead.</strong> Several years of production ML discipline: price-elasticity and forecasting models with explicit causal-confounder control, promotion optimization, and drift monitoring with automated retraining. I led a small team of machine learning engineers and data scientists delivering models across six international markets.</p>
+
+      <p><strong>Independent (2026&ndash;present).</strong> Two client engagements in classical 3D perception: a scan-to-BIM reconstruction pipeline converting 225M+ point laser scans of a building into a structured IFC model, and an embedded road-defect detection and navigation system. I also teach AI for Robotics part-time through UC Santa Cruz Silicon Valley Extension, covering perception, SLAM, and deployment.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="h-how">
+      <h2 id="h-how">How I work</h2>
+      <p>I care about hard physical-world ML problems and the unglamorous engineering that makes a system survivable in production &mdash; the part most demos skip. I trust production usability and operator reliability more than headline model metrics, and I'm more interested in the audit that catches a confident-but-wrong result than in a clean-looking summary number. Geometry and classical methods first where they're enough; learning where geometry runs out.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="h-edu">
+      <h2 id="h-edu">Education &amp; foundations</h2>
+      <p>B.S. in Computer Engineering, California State University, Sacramento (2018), Tau Beta Pi. Primary languages Python and C++; deep work in 3D scene understanding, visual SLAM and structure-from-motion, multi-view geometry, semantic segmentation, and edge deployment (ONNX, TensorRT, CUDA, Jetson).</p>
+    </section>
+
+    <section class="prose" aria-label="Contact">
+      <h2>Get in touch</h2>
+      <p>Oakland, CA &middot; <a href="mailto:sudhakaralla@icloud.com">sudhakaralla@icloud.com</a> &middot; <a href="https://linkedin.com/in/sudhakaralla" rel="noopener noreferrer">LinkedIn</a> &middot; <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a> &middot; <a href="assets/Sudhakar_Alla_Resume.pdf" rel="noopener noreferrer">Resume &darr;</a></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="index.html">Home</a>
+      <a href="reading.html">Reading</a>
+      <a href="mailto:sudhakaralla@icloud.com">Email</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

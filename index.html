@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudhakar Alla — Senior CV/ML Engineer</title>
+  <meta name="description" content="Sudhakar Alla is a computer vision and perception engineer building systems that survive the real world — edge deployment, honest evaluation, production-hardened ML.">
+  <meta property="og:title" content="Sudhakar Alla — Senior CV/ML Engineer">
+  <meta property="og:description" content="Computer vision and perception engineer. Production systems, honest evaluation. Oakland, CA.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="about.html">About</a>
+        <a href="demos.html">Demos</a>
+        <a href="reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-text">
+      <div class="hero-id">
+        <!-- Headshot placeholder. Replace with:
+             <img class="photo" src="assets/headshot.jpg" alt="Sudhakar Alla" loading="lazy">
+             once assets/headshot.jpg is in place. -->
+        <div class="photo" role="img" aria-label="Photo of Sudhakar Alla"></div>
+      </div>
+      <h1>Sudhakar Alla</h1>
+      <p class="tagline">Senior CV/ML Engineer · Production perception, edge deployment, honest evaluation</p>
+      <p class="location">Oakland, CA</p>
+      <nav class="link-row" aria-label="Contact and profiles">
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/sudhakaralla" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:sudhakaralla@icloud.com">Email</a>
+        <a href="assets/Sudhakar_Alla_Resume.pdf" rel="noopener noreferrer">Resume &darr;</a>
+      </nav>
+    </div>
+
+    <div class="hero-viewport">
+      <canvas id="sim-canvas" aria-hidden="true"></canvas>
+      <div class="vp-live" aria-hidden="true"><span class="dot"></span>LIVE</div>
+      <div class="telemetry" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="about pull" aria-labelledby="h-about">
+      <h2 id="h-about">About</h2>
+      <p>I'm a computer vision and perception engineer who builds systems that have to survive contact with the real world. At Applied Materials, I solved a defect-clustering problem on SEM imagery that three prior teams couldn't crack, by defining what "correct" meant before I touched a model. At ICURO, I shipped edge vision on Jetson Xavier with a 70% latency cut, and the 3D perception systems I built are still in daily production use by hundreds of operators today. For the last several years I led AI/ML development and delivery at Kimberly-Clark, running production models across six international markets. I care about hard physical-world ML problems and the unglamorous engineering that makes a system survivable in production. I trust production usability and operator reliability more than model metrics. <a href="about.html">More about me &rarr;</a></p>
+    </section>
+
+    <section aria-labelledby="h-projects">
+      <h2 id="h-projects">Projects</h2>
+
+      <div class="proj-featured">
+
+        <article class="card featured">
+          <div class="card-head">
+            <h3><a href="projects/occupancy-ekf.html">EKF Localization + Occupancy Mapping</a></h3>
+            <a class="card-repo" href="https://github.com/salla23/occupancy-ekf-fusion" rel="noopener noreferrer">github &#8599;</a>
+          </div>
+          <ul>
+            <li>From-scratch 3-DoF EKF fusing visual odometry and fiducial pose with adaptive, quality-weighted measurement covariance and Joseph-form updates.</li>
+            <li>Graceful failover: a dropped fiducial is a skipped update, not special-case logic &mdash; the filter coasts and recovers.</li>
+            <li>Log-odds occupancy mapping from ray-cast LiDAR/sonar, a semantic layer, and a ROS2 node layer. Validated in simulation with a full unit and integration test suite.</li>
+          </ul>
+          <a class="more" href="projects/occupancy-ekf.html">Read the deep-dive &rarr;</a>
+        </article>
+
+        <article class="card featured">
+          <div class="card-head">
+            <h3><a href="projects/crack-detection.html">Crack Detection &amp; Autonomous Navigation Pipeline</a></h3>
+            <a class="card-repo" href="https://github.com/salla23/crack-detection-pipeline" rel="noopener noreferrer">github &#8599;</a>
+          </div>
+          <ul>
+            <li>Hybrid pipeline: CLAHE + Difference-of-Gaussians preprocessing isolates crack ridges; classical morphology localizes and measures cracks (length, width via distance transform, severity).</li>
+            <li>Union-of-detectors decision driven by cost asymmetry: a missed crack means an expensive return visit; a false positive wastes pennies of sealant.</li>
+            <li>Crack skeleton modeled as a graph; a Chinese Postman route covers every crack segment &mdash; the waypoint plan a repair platform follows.</li>
+            <li>Built inside a wider defect-detection framework, with semiconductor (SEM) and aerial inspection as sibling pipelines I'm extending next.</li>
+          </ul>
+          <a class="more" href="projects/crack-detection.html">Read the deep-dive &rarr;</a>
+        </article>
+
+        <article class="card featured">
+          <div class="card-head">
+            <h3><a href="projects/scan-to-bim.html">Scan-to-BIM Reconstruction: A Case Study in Honest Evaluation</a></h3>
+            <a class="card-repo" href="https://github.com/salla23/scan-to-bim-case-study" rel="noopener noreferrer">github &#8599;</a>
+          </div>
+          <ul>
+            <li>Classical geometric pipeline reconstructing a multi-storey building from 225M+ raw point-cloud points to an IFC model: RANSAC plane extraction, normal-based classification, instance splitting, topology refinement.</li>
+            <li>Centerpiece finding: a pipeline reporting 99.95% of points classified was silently mislabeling most wall geometry as ceiling. Percent-classified is the wrong success metric; per-class geometric self-consistency is the honest signal.</li>
+            <li>Writeup covers the audit that caught it, the fix, and the evaluation design. A public-dataset reimplementation is in progress.</li>
+          </ul>
+          <a class="more" href="projects/scan-to-bim.html">Read the deep-dive &rarr;</a>
+        </article>
+
+      </div>
+
+      <div class="proj-split" aria-hidden="true"><span class="mark"></span></div>
+
+      <div class="proj-progress">
+
+        <article class="card compact">
+          <div class="card-head">
+            <h3><a href="projects/bev.html">BEV Perception with Temporal Fusion <span class="wip">(in&nbsp;progress)</span></a></h3>
+            <a class="card-repo" href="https://github.com/salla23/bev-nuscenes-mini" rel="noopener noreferrer">github &#8599;</a>
+          </div>
+          <ul>
+            <li>Camera-to-BEV semantic segmentation on nuScenes, with a per-cell temporal filter that fuses predictions across frames using ego-motion.</li>
+            <li>The same Bayesian-grid idea as the occupancy work, generalized from a static two-class map to a moving-frame, many-class one.</li>
+            <li>Evaluation: per-class IoU, latency, and a failure analysis across range, night, and occlusion.</li>
+          </ul>
+          <a class="more" href="projects/bev.html">Read the writeup &rarr;</a>
+        </article>
+
+        <article class="card compact">
+          <div class="card-head">
+            <h3><a href="projects/occlusion.html">Compositional Estimation Under Occlusion <span class="wip">(in&nbsp;progress)</span></a></h3>
+            <a class="card-repo" href="https://github.com/salla23/occlusion-compositional-estimation" rel="noopener noreferrer">github &#8599;</a>
+          </div>
+          <ul>
+            <li>Estimating the per-class makeup of a falling stream of mixed objects when they heavily occlude one another.</li>
+            <li>The fall is the opportunity: tracking objects through it and aggregating visibility-weighted evidence recovers what no single frame shows.</li>
+            <li>Allocates against a known total and reports an explicit unattributed residual rather than guessing &mdash; honest abstention over confident misattribution.</li>
+          </ul>
+          <a class="more" href="projects/occlusion.html">Read the writeup &rarr;</a>
+        </article>
+
+        <article class="card compact">
+          <div class="card-head">
+            <h3><a href="projects/basketball.html">Basketball Game Understanding <span class="wip">(in&nbsp;progress)</span></a></h3>
+            <a class="card-repo" href="https://github.com/salla23/basketball-cv" rel="noopener noreferrer">github &#8599;</a>
+          </div>
+          <ul>
+            <li>Turning basketball footage into structured game data: player and ball tracking, team assignment, jersey numbers, and court position.</li>
+            <li>Re-identification that survives occlusion by pairing motion prediction with an appearance model, so identities don't swap when players cross.</li>
+            <li>Court-to-image homography from court lines, mapping every player to a real floor coordinate &mdash; the step that turns tracking into analysis.</li>
+          </ul>
+          <a class="more" href="projects/basketball.html">Read the writeup &rarr;</a>
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/sudhakaralla" rel="noopener noreferrer">LinkedIn</a>
+      <a href="mailto:sudhakaralla@icloud.com">Email</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan-to-BIM: Honest Evaluation — Sudhakar Alla</title>
+  <meta name="description" content="A classical scan-to-BIM pipeline and a case study in honest evaluation: how a pipeline reporting 99.95% classified was silently mislabeling most wall geometry, and the audit that caught it.">
+  <meta property="og:title" content="Scan-to-BIM Reconstruction: A Case Study in Honest Evaluation">
+  <meta property="og:description" content="Confident misclassification hides inside good-looking summaries. The audit, the fix, and the evaluation design.">
+  <meta property="og:type" content="article">
+  <meta name="theme-color" content="#f4f4f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">Sudhakar Alla</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../demos.html">Demos</a>
+        <a href="../reading.html">Reading</a>
+        <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <a class="back" href="../index.html">&larr; All projects</a>
+    <h1>Scan-to-BIM Reconstruction: A Case Study in Honest Evaluation</h1>
+    <p class="sub">Classical geometry &middot; point cloud &rarr; IFC &middot;
+      <a href="https://github.com/salla23/scan-to-bim-case-study" rel="noopener noreferrer">github &#8599;</a></p>
+  </div>
+
+  <main class="prose" id="main">
+
+    <p>A classical geometric pipeline that reconstructs a multi-storey commercial building from raw terrestrial laser scans (225M+ points across a ground floor and mezzanine) into an IFC4 building model. The original work was developed against non-public client data; this writeup is the methods and evaluation story, and a public-dataset reimplementation is in progress (see below).</p>
+
+    <div class="fig">
+      <div class="fig-img-wrap">
+        <img src="../assets/scan_to_bim_pipeline.png" alt="Classical geometric pipeline: planes, classes, instances, topology, IFC" loading="lazy">
+      </div>
+      <figcaption>Ingest &rarr; registration &rarr; voxel preprocess + normals &rarr; RANSAC planes &rarr; wall pass &rarr; classification &rarr; instance split &rarr; topology &rarr; IFC.</figcaption>
+    </div>
+
+    <h2>The finding: confident misclassification hides inside good-looking summaries</h2>
+    <p>A mid-version of the pipeline reported 99.95% of points classified, with clean-looking wall instances. Auditing per-class point normals told a different story: the ceiling class had a median |n&middot;z| of 0.189 where a real ceiling should sit near 1.0. Cross-checking all wall-oriented points in the cloud, only a small fraction had landed in the wall class &mdash; most sat inside the ceiling class. The interior partition network was present, confidently labeled, and wrong. The mechanism: the horizontal RANSAC pass ran first with a large plane budget and consumed the biggest inlier pools, starving the wall pass through inlier competition.</p>
+    <p><strong>Confidently misclassified is not the same failure as unclassified, and standard coverage metrics cannot tell them apart.</strong></p>
+
+    <h2>The fix</h2>
+    <p>An independent wall-extraction pass operating on a 2D projection &mdash; which cannot be starved by horizontal RANSAC &mdash; plus a permanent <code>wall_capture_audit</code> metric gate: the share of wall-oriented points (by normals) actually captured by the wall class. After the fix, wall capture rose to roughly 95% on the ground floor and 86% on the mezzanine, with strong room-enclosure scores.</p>
+
+    <h2>Evaluation design</h2>
+    <p>Percent-classified is the wrong success metric; per-class geometric self-consistency is the honest signal &mdash; do floor normals point up, do wall normals lie flat, do walls enclose rooms. For comparing reconstructed geometry to a reference, instance-matched 3D-IoU is brittle for thin elements (a wall-thickness offset alone collapses it); a class-level voxel-overlap measure evaluates what was actually reconstructed. A cheaper lesson came earlier: a return-value bug had one stage reporting a pre-fix cloud, which made every downstream number meaningless until the actual point cloud was loaded and checked class by class. Verify with the data, not the printed summary.</p>
+
+    <h2>Public reimplementation</h2>
+    <p>The core that carries the finding is now a runnable, modular package: voxel preprocessing and normals, iterative RANSAC plane extraction, the independent 2D-projection wall pass, normal-based classification, the <code>wall_capture_audit</code> gate, and an IFC4 export (IfcOpenShell with a pure-Python STEP fallback, emitting <code>IfcWallStandardCase</code>). It builds on BIMStruct3D (Chamseddine et al., EC³ 2026), whose instance-matching-free voxel-overlap metric, vIoU, I adopt for honest geometric comparison. Related open tooling such as Cloud2BIM tackles the same point-cloud-to-IFC problem while deliberately avoiding RANSAC; the contrast is part of what makes the confident-misclassification audit worth showing.</p>
+    <p class="note">A reproducible synthetic scene is included as a fast smoke test that the pipeline runs and the metrics compute. The headline failure mode &mdash; walls absorbed into the ceiling class &mdash; only manifests on real cluttered junction geometry, so the audit's value is shown against labelled real scans (University of Porto / INESC TEC, CC BY 4.0; ISPRS TUB), not the clean synthetic demo.</p>
+
+    <p><a href="https://github.com/salla23/scan-to-bim-case-study" rel="noopener noreferrer">View the writeup on GitHub &#8599;</a></p>
+
+  </main>
+
+  <footer>
+    <p class="copy">&copy; 2026 Sudhakar Alla &middot; Built simply on purpose.</p>
+    <nav class="link-row" aria-label="Footer links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../reading.html">Reading</a>
+    </nav>
+  </footer>
+
+</div>
+</body>
+</html>
