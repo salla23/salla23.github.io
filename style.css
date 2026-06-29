@@ -12,7 +12,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── 1. Tokens ───────────────────────────────────────────────────────────── */
+/* ── 1. Tokens ──────────────────────────────────────────────────────────────── */
 :root {
   color-scheme: light;
 
@@ -130,7 +130,7 @@ strong, b { font-weight: 600; }
 }
 .wrap { padding-bottom: clamp(3rem, 8vw, 6rem); }
 
-/* ── 3. Nav (full-bleed sticky bar) ──────────────────────────────────────── */
+/* ── 3. Nav (full-bleed sticky bar) ────────────────────────────────────────── */
 .nav {
   position: sticky; top: 0; z-index: 100;
   border-bottom: 1px solid var(--line);
@@ -182,7 +182,7 @@ strong, b { font-weight: 600; }
 :root[data-theme="light"] .theme-toggle .i-sun{display:none}
 :root[data-theme="light"] .theme-toggle .i-moon{display:block}
 
-/* ── 4. Hero (landing) ───────────────────────────────────────────────────── */
+/* ── 4. Hero (landing) ────────────────────────────────────────────────────── */
 header.hero {
   display: grid; grid-template-columns: 1.04fr .96fr;
   gap: clamp(2rem, 5vw, 4.2rem); align-items: center;
@@ -191,7 +191,7 @@ header.hero {
 }
 .hero-id { margin-bottom: 1.4rem; }
 .photo {
-  width: 60px; height: 60px; border-radius: 13px;
+  width: 130px; height: 130px; border-radius: 13px;
   border: 1px solid var(--line-strong); background: var(--surface-2);
   position: relative; overflow: hidden;
   background-image:
@@ -204,11 +204,11 @@ header.hero {
   box-shadow: var(--shadow-1);
 }
 .photo::before, .photo::after { /* fiducial corner ticks */
-  content:""; position:absolute; width:9px; height:9px; pointer-events:none;
+  content:""; position:absolute; width:15px; height:15px; pointer-events:none;
   border-color: var(--accent); border-style: solid;
 }
-.photo::before { top:5px; left:5px; border-width:1.5px 0 0 1.5px; }
-.photo::after  { bottom:5px; right:5px; border-width:0 1.5px 1.5px 0; }
+.photo::before { top:7px; left:7px; border-width:1.5px 0 0 1.5px; }
+.photo::after  { bottom:7px; right:7px; border-width:0 1.5px 1.5px 0; }
 img.photo { object-fit: cover; display: block; background: var(--surface-2); }
 
 .hero h1 {
@@ -293,7 +293,7 @@ img.photo { object-fit: cover; display: block; background: var(--surface-2); }
 .telemetry b { color: rgba(221,229,255,.95); font-weight:500; }
 .telemetry .t-stat { color: var(--signal); }
 
-/* ── 5. Sections & headings ──────────────────────────────────────────────── */
+/* ── 5. Sections & headings ────────────────────────────────────────────────── */
 main { display: block; }
 section { padding-block: clamp(2.1rem, 5vw, 3.7rem); }
 section + section { border-top: 1px solid var(--line); }
@@ -353,7 +353,7 @@ h3 {
 .about a { color: var(--accent); text-decoration: underline; text-decoration-color: var(--accent-line); text-underline-offset: 3px; }
 .about a:hover { color: var(--accent-press); }
 
-/* ── 7. Projects ─────────────────────────────────────────────────────────── */
+/* ── 7. Projects ──────────────────────────────────────────────────────────── */
 .proj-featured { display: grid; gap: 1.2rem; }
 
 .proj-split {
@@ -505,7 +505,7 @@ table.metrics td:last-child { text-align: right; color: var(--ink); font-weight:
   white-space: nowrap; font-weight: 500;
 }
 
-/* ── 11. Page header (inner pages) ───────────────────────────────────────── */
+/* ── 11. Page header (inner pages) ─────────────────────────────────────────── */
 .page-head {
   max-width: var(--maxw-prose); margin-inline: auto;
   padding: clamp(2.2rem, 5vw, 3.4rem) 0 1.8rem;
@@ -598,7 +598,7 @@ footer .link-row a:hover { color: var(--accent); background: var(--accent-soft);
   .card-head { flex-direction: column; gap: .5rem; align-items: flex-start; }
 }
 
-/* ── 15. Print ───────────────────────────────────────────────────────────── */
+/* ── 15. Print ──────────────────────────────────────────────────────────── */
 @media print {
   .nav, .theme-toggle, .hero-viewport, .skip-link { display: none !important; }
   body { background: #fff; color: #000; }
