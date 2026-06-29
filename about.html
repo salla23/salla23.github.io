@@ -15,6 +15,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
   <script src="main.js" defer></script>
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D9WTSHDK8H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-D9WTSHDK8H");
+  </script>
 </head>
 <body>
 
@@ -55,18 +63,23 @@
     <section class="prose" aria-labelledby="h-work">
       <h2 id="h-work">Where I've worked</h2>
 
-      <p><strong>ICURO — Founding Autonomous Systems Engineer.</strong> My strongest anchor in perception and robotics. I built a multi-sensor perception and localization stack for a teleoperated platform: a four-sensor suite fusing camera VSLAM, fiducial pose, sonar, and 2D LiDAR through an EKF with confidence-weighted failover, plus a probabilistic occupancy grid consumed by the planner. I shipped edge vision on Jetson with a roughly 70% latency reduction, and the systems I built there are still in daily production use by hundreds of operators.</p>
+      <p><strong>ICURO — Founding Autonomous Systems Engineer.</strong> My strongest anchor in perception and robotics. I built a multi-sensor perception and localization stack for a teleoperated platform: a four-sensor suite fusing camera VSLAM, fiducial pose, sonar, and 2D LiDAR through an EKF with confidence-weighted failover, plus a probabilistic occupancy grid consumed by the planner. I shipped edge vision on Jetson with a roughly 70% latency reduction, and the systems I built there reached daily production use by hundreds of operators.</p>
 
       <p><strong>Applied Materials — Machine Vision Engineer.</strong> My evaluation-discipline anchor. I solved an SEM defect-detection and clustering problem that three prior engineering teams had failed to crack &mdash; not with a bigger model, but by defining domain-grounded correctness metrics first, then building to them. I documented the approach in an internal IEEE-style paper.</p>
 
-      <p><strong>Kimberly-Clark — AI Tech Lead.</strong> Several years of production ML discipline: price-elasticity and forecasting models with explicit causal-confounder control, promotion optimization, and drift monitoring with automated retraining. I led a small team of machine learning engineers and data scientists delivering models across six international markets.</p>
+      <p><strong>Kimberly-Clark — AI Tech Lead.</strong> Several years of production ML discipline across forecasting, price elasticity, and promotion optimization. I authored the first-generation elasticity model and the forecasting pipeline myself — the forecasting work through nearly six months of change management with business stakeholders before it shipped — then led delivery, production rollout, and generalization across markets and product categories. I led and mentored the rotating team of engineers and data scientists who extended that work, and instituted PSI-based drift monitoring with automated retraining. I trust causal-confounder control over naive curve-fitting, and a drift trigger over a hopeful deploy.</p>
 
-      <p><strong>Independent (2026&ndash;present).</strong> Two client engagements in classical 3D perception: a scan-to-BIM reconstruction pipeline converting 225M+ point laser scans of a building into a structured IFC model, and an embedded road-defect detection and navigation system. I also teach AI for Robotics part-time through UC Santa Cruz Silicon Valley Extension, covering perception, SLAM, and deployment.</p>
+      <p><strong>Independent (2026&ndash;present).</strong> Client projects in classical 3D perception: a scan-to-BIM reconstruction pipeline converting 225M+ point laser scans of a building into a structured IFC model, and an embedded road-defect detection and navigation system &mdash; alongside the open-source perception work in my projects.</p>
     </section>
 
     <section class="prose" aria-labelledby="h-how">
       <h2 id="h-how">How I work</h2>
-      <p>I care about hard physical-world ML problems and the unglamorous engineering that makes a system survivable in production &mdash; the part most demos skip. I trust production usability and operator reliability more than headline model metrics, and I'm more interested in the audit that catches a confident-but-wrong result than in a clean-looking summary number. Geometry and classical methods first where they're enough; learning where geometry runs out.</p>
+      <p>I care about hard physical-world ML problems and the unglamorous engineering that makes a system survivable in production &mdash; the part most demos skip. I trust production usability and operator reliability more than headline model metrics, and I'm more interested in the audit that catches a confident-but-wrong result than in a clean-looking summary number. Geometry and classical methods first where they're enough; learning where geometry runs out. Away from the screen I'm usually on a basketball court, behind a camera, carving wood, or cooking something involved &mdash; hands-on crafts that, like the work, reward patience and a steady eye.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="h-teach">
+      <h2 id="h-teach">Teaching</h2>
+      <p>From 2021 to 2025 I designed and taught <strong>AI for Robotics</strong> (AISV 807) at UC Santa Cruz Silicon Valley Extension &mdash; an applied course covering perception, SLAM fundamentals, and deployment pipelines, with real-time detection projects and student capstones I mentored, including a vision-based robotic-arm grasping system. Teaching keeps the fundamentals sharp; having to explain an architecture to someone is the fastest way to find the gaps in your own understanding.</p>
     </section>
 
     <section class="prose" aria-labelledby="h-edu">
