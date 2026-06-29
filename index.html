@@ -44,13 +44,11 @@
   <header class="hero">
     <div class="hero-text">
       <div class="hero-id">
-        <!-- Headshot placeholder. Replace with:
-             <img class="photo" src="assets/headshot.jpg" alt="Sudhakar Alla" loading="lazy">
-             once assets/headshot.jpg is in place. -->
+        <img class="photo" src="assets/headshot.jpg" alt="Sudhakar Alla" loading="lazy">
         <div class="photo" role="img" aria-label="Photo of Sudhakar Alla"></div>
       </div>
       <h1>Sudhakar Alla</h1>
-      <p class="tagline">Senior CV/ML Engineer · Production perception, edge deployment, honest evaluation</p>
+      <p class="tagline">Computer Vision & Perception Engineer · Production perception, edge deployment, honest evaluation</p>
       <p class="location">Oakland, CA</p>
       <nav class="link-row" aria-label="Contact and profiles">
         <a href="https://github.com/salla23" rel="noopener noreferrer">GitHub</a>
@@ -71,7 +69,7 @@
 
     <section class="about pull" aria-labelledby="h-about">
       <h2 id="h-about">About</h2>
-      <p>I'm a computer vision and perception engineer who builds systems that have to survive contact with the real world. At Applied Materials, I solved a defect-clustering problem on SEM imagery that three prior teams couldn't crack, by defining what "correct" meant before I touched a model. At ICURO, I shipped edge vision on Jetson Xavier with a 70% latency cut, and the 3D perception systems I built are still in daily production use by hundreds of operators today. For the last several years I led AI/ML development and delivery at Kimberly-Clark, running production models across six international markets. I care about hard physical-world ML problems and the unglamorous engineering that makes a system survivable in production. I trust production usability and operator reliability more than model metrics. <a href="about.html">More about me &rarr;</a></p>
+      <p>I build computer vision and perception systems that survive contact with the real world. At Applied Materials, I solved a defect-clustering problem on SEM imagery that three prior teams couldn't solve, by defining what "correct" meant before I touched a model. At ICURO, I shipped edge vision on Jetson Xavier with a 70% latency cut, and the 3D perception systems I built reached daily production use by hundreds of operators. For the last several years I led AI/ML development and delivery at Kimberly-Clark, running production models across six international markets. I care about hard physical-world ML problems and the unglamorous engineering that makes a system survivable in production. I trust production usability and operator reliability more than model metrics. <a href="about.html">More about me &rarr;</a></p>
     </section>
 
     <section aria-labelledby="h-projects">
@@ -86,7 +84,7 @@
           </div>
           <ul>
             <li>From-scratch 3-DoF EKF fusing visual odometry and fiducial pose with adaptive, quality-weighted measurement covariance and Joseph-form updates.</li>
-            <li>Graceful failover: a dropped fiducial is a skipped update, not special-case logic &mdash; the filter coasts and recovers.</li>
+            <li>Graceful failover: a dropped fiducial is a skipped update &mdash; the filter coasts and recovers.</li>
             <li>Log-odds occupancy mapping from ray-cast LiDAR/sonar, a semantic layer, and a ROS2 node layer. Validated in simulation with a full unit and integration test suite.</li>
           </ul>
           <a class="more" href="projects/occupancy-ekf.html">Read the deep-dive &rarr;</a>
@@ -112,8 +110,8 @@
             <a class="card-repo" href="https://github.com/salla23/scan-to-bim-case-study" rel="noopener noreferrer">github &#8599;</a>
           </div>
           <ul>
-            <li>Classical geometric pipeline reconstructing a multi-storey building from 225M+ raw point-cloud points to an IFC model: RANSAC plane extraction, normal-based classification, instance splitting, topology refinement.</li>
-            <li>Centerpiece finding: a pipeline reporting 99.95% of points classified was silently mislabeling most wall geometry as ceiling. Percent-classified is the wrong success metric; per-class geometric self-consistency is the honest signal.</li>
+            <li>Classical geometric pipeline reconstructing multi-storey buildings from raw point-clouds into IFC models: RANSAC plane extraction, normal-based classification, instance splitting, topology refinement.</li>
+            <li>Centerpiece finding: a pipeline reported 99.95% of points classified but was silently mislabeling geometry &mdash; The fix was to rely on per-class geometric self-consistency as the honest signal.</li>
             <li>Writeup covers the audit that caught it, the fix, and the evaluation design. A public-dataset reimplementation is in progress.</li>
           </ul>
           <a class="more" href="projects/scan-to-bim.html">Read the deep-dive &rarr;</a>
@@ -132,7 +130,7 @@
           </div>
           <ul>
             <li>Camera-to-BEV semantic segmentation on nuScenes, with a per-cell temporal filter that fuses predictions across frames using ego-motion.</li>
-            <li>The same Bayesian-grid idea as the occupancy work, generalized from a static two-class map to a moving-frame, many-class one.</li>
+            <li>The same Bayesian-grid idea as my occupancy work, generalized from a static two-class map to a moving-frame, many-class one.</li>
             <li>Evaluation: per-class IoU, latency, and a failure analysis across range, night, and occlusion.</li>
           </ul>
           <a class="more" href="projects/bev.html">Read the writeup &rarr;</a>
